@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Recruiter Candidate Management{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+  <!-- Metrics Header -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Candidates</span>
+      <span class="stat-value" id="stat-total">{{ total }}</span>
+    </div>
+    <div class="stat-card border-applied">
+      <span class="stat-label">Applied</span>
+      <span class="stat-value" id="stat-applied">{{ counts.Applied }}</span>
+    </div>
+    <div class="stat-card border-screening">
+      <span class="stat-label">Screening</span>
+      <span class="stat-value" id="stat-screening">{{ counts.Screening }}</span>
+    </div>
+    <div class="stat-card border-interview">
+      <span class="stat-label">Interview</span>
+      <span class="stat-value" id="stat-interview">{{ counts.Interview }}</span>
+    </div>
+    <div class="stat-card border-offer">
+      <span class="stat-label">Offer</span>
+      <span class="stat-value" id="stat-offer">{{ counts.Offer }}</span>
+    </div>
+    <div class="stat-card border-hired">
+      <span class="stat-label">Hired</span>
+      <span class="stat-value" id="stat-hired">{{ counts.Hired }}</span>
+    </div>
+  </div>
+
+  <!-- Search and Filter Panel -->
+  <div class="filter-card">
+    <form id="search-form" class="filter-form" onsubmit="event.preventDefault(); applyFilters();">
+      <div class="filter-group">
+        <label for="search-input">Search Candidate</label>
+        <input type="text" id="search-input" placeholder="Fuzzy search name (e.g., Harsh)..." autocomplete="off">
+      </div>
+
+      <div class="filter-group">
+        <label for="stage-select">Stage</label>
+        <select id="stage-select">
+          <option value="">All Stages</option>
+          <option value="Applied">Applied</option>
+          <option value="Screening">Screening</option>
+          <option value="Interview">Interview</option>
+          <option value="Offer">Offer</option>
+          <option value="Hired">Hired</option>
+        </select>
+      </div>
+
+      <div class="filter-group compact">
+        <label for="min-days">Min Days in Stage</label>
+        <input type="number" id="min-days" min="0" placeholder="e.g. 5">
+      </div>
+
+      <div class="filter-group compact">
+        <label for="max-days">Max Days in Stage</label>
+        <input type="number" id="max-days" min="0" placeholder="e.g. 30">
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" class="btn btn-secondary">Search / Filter</button>
+        <button type="button" class="btn btn-outline" onclick="resetFilters()">Clear Filters</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Stage Grouped Kanban View -->
+  <div class="stages-board" id="board">
+    {% set stages = ["Applied", "Screening", "Interview", "Offer", "Hired"] %}
+    {% for stage in stages %}
+    <div class="stage-column" data-stage="{{ stage }}">
+      <div class="stage-header stage-{{ stage|lower }}">
+        <h3>{{ stage }}</h3>
+        <span class="badge" id="count-{{ stage|lower }}">
+          {{ candidates|selectattr("current_stage", "equalto", stage)|list|length }}
+        </span>
+      </div>
+
+      <div class="stage-cards" id="list-{{ stage|lower }}">
+        {% for c in candidates if c.current_stage == stage %}
+        <div class="candidate-card" id="card-{{ c.id }}">
+          <div class="card-title-row">
+            <h4 class="candidate-name">{{ c.full_name }}</h4>
+            <span class="age-badge">{{ c.days_in_current_stage }}d in stage</span>
+          </div>
+          <p class="candidate-pos"><strong>Position:</strong> {{ c.position }}</p>
+          <p class="candidate-email"><strong>Email:</strong> {{ c.email }}</p>
+          <p class="candidate-source"><small>Source: {{ c.source }}</small></p>
+
+          <div class="card-footer">
+            <a href="/candidates/{{ c.id }}" class="btn-link">View Details</a>
+            {% if stage != "Hired" %}
+            <button class="btn btn-sm btn-action" onclick="advanceCandidate({{ c.id }}, '{{ stage }}')">
+              Move to Next &rarr;
+            </button>
+            {% endif %}
+          </div>
+        </div>
+        {% else %}
+        <p class="empty-state">No candidates in {{ stage }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

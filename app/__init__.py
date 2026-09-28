@@ -1,0 +1,1 @@
+"""Recruiter Candidate Management System App Package."""

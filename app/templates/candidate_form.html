@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Candidate | ATS Portal{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+  <a href="/" class="back-link">&larr; Back to Dashboard</a>
+  <div class="card form-card">
+    <h2>Add New Candidate</h2>
+    <p class="text-muted">Candidate will be added directly into the initial <strong>Applied</strong> stage.</p>
+
+    <form id="add-candidate-form" onsubmit="submitCandidateForm(event)">
+      <div class="form-group">
+        <label for="full_name">Full Name *</label>
+        <input type="text" id="full_name" required placeholder="e.g. Harshita Verma">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" required placeholder="e.g. harshita@example.com">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="e.g. +1-555-0192">
+      </div>
+
+      <div class="form-group">
+        <label for="position">Applied Position *</label>
+        <input type="text" id="position" required placeholder="e.g. Senior Backend Engineer">
+      </div>
+
+      <div class="form-group">
+        <label for="source">Source</label>
+        <select id="source">
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Direct">Direct</option>
+          <option value="Referral">Referral</option>
+          <option value="Recruiter Outreach">Recruiter Outreach</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Candidate</button>
+        <a href="/" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

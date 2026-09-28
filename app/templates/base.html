@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Recruiter Candidate Management{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-title">
+        <span class="icon">💼</span>
+        <span>Recruiter ATS Portal</span>
+      </a>
+      <nav class="header-nav">
+        <a href="/" class="nav-link">Dashboard</a>
+        <a href="/candidates/new" class="btn btn-primary">+ Add Candidate</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="toast-container"></div>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; Recruiter Candidate Management System | Production Grade Demo</p>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
